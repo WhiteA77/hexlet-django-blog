@@ -1,6 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-
 
 def index(request):
-    return HttpResponse("article")
+    context = {
+        "app_name": "hexlet_django_blog.article",  # название приложения
+        "description": "Страница собирается встроенным шаблонизатором Django.",
+    }
+    return render(request, "articles/index.html", context)

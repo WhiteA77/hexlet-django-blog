@@ -1,0 +1,17 @@
+<!-- hexlet_django_blog/article/templates/articles/index.html -->
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>{{ app_name }} — главная</title>
+</head>
+<body>
+  <h1>Приложение: {{ app_name }}</h1>
+  <p>Это отдельный шаблон из приложения <strong>{{ app_name }}</strong>.</p>
+
+  <!-- Для примера выведем ещё что-нибудь из контекста -->
+  {% if description %}
+    <p>{{ description }}</p>
+  {% endif %}
+</body>
+</html>
