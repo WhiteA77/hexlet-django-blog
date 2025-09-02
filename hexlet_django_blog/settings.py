@@ -11,21 +11,30 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env if present
+load_dotenv()
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$=+zpi%4g2svjs*fded$8ebt&&iy=m3d8q1#__c7b5t8dc(kzr'
+# Default is for local dev only; override via env SECRET_KEY
+SECRET_KEY_DEFAULT = 'django-insecure-$=+zpi%4g2svjs*fded$8ebt&&iy=m3d8q1#__c7b5t8dc(kzr'
+SECRET_KEY = os.getenv("SECRET_KEY", SECRET_KEY_DEFAULT)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG accepts: 1/0, true/false, yes/no, on/off
+DEBUG = os.getenv("DEBUG", "True").lower() in ("1", "true", "yes", "on")
 
-ALLOWED_HOSTS = []
+# Comma-separated hosts list in env (e.g. "127.0.0.1,localhost")
+ALLOWED_HOSTS = [h.strip() for h in os.getenv("ALLOWED_HOSTS", "").split(",") if h.strip()]
 
 
 # Application definition
@@ -80,6 +89,17 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Optionally override DB from DATABASE_URL (requires dj-database-url)
+try:
+    import dj_database_url  # type: ignore
+
+    db_from_env = dj_database_url.config(env="DATABASE_URL", conn_max_age=600)
+    if db_from_env:
+        DATABASES['default'].update(db_from_env)
+except Exception:
+    # dj-database-url not installed or misconfigured; keep default DB
+    pass
 
 
 # Password validation
