@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Создание статьи</h1>
+
+    {% if form.errors %}
+        <div>
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li><strong>{{ field }}: {{ error }}</strong></li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <form action="{% url 'articles:create' %}" method="post">
+        {% csrf_token %}
+        <table border="1">
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Создать">
+    </form>
+
+    <p><a href="{% url 'articles:index' %}">К списку статей</a></p>
+{% endblock %}
