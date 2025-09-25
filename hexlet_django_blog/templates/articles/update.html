@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Редактирование статьи "{{ article.name }}"</h1>
+
+    {% url 'articles:edit' id=article.id as edit_url %}
+    {% include "articles/_form.html" with action=edit_url submit_label="Сохранить" %}
+
+    <p>
+        <a href="{% url 'articles:show' id=article.id %}">Просмотреть статью</a> |
+        <a href="{% url 'articles:index' %}">К списку статей</a>
+    </p>
+{% endblock %}

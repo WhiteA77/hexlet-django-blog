@@ -52,3 +52,35 @@ class ArticleFormCreateView(View):
             "articles/create.html",
             context={"form": form},
         )
+
+
+class ArticleFormEditView(View):
+    def get(self, request, *args, **kwargs):
+        article = get_object_or_404(Article, id=kwargs["id"])
+        form = ArticleForm(instance=article)
+        return render(
+            request,
+            "articles/update.html",
+            context={
+                "form": form,
+                "article": article,
+            },
+        )
+
+    def post(self, request, *args, **kwargs):
+        article = get_object_or_404(Article, id=kwargs["id"])
+        form = ArticleForm(request.POST, instance=article)
+        if form.is_valid():
+            article = form.save()
+            messages.success(request, "Статья успешно обновлена")
+            return redirect("articles:show", id=article.id)
+
+        messages.error(request, "Исправьте ошибки формы")
+        return render(
+            request,
+            "articles/update.html",
+            context={
+                "form": form,
+                "article": article,
+            },
+        )

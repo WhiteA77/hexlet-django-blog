@@ -11,6 +11,7 @@
                     <a href="{% url 'articles:show' id=article.id %}">{{ article.name }}</a>
                 </h2>
                 <div>{{ article.body|slice:":200" }}</div>
+                <p><a href="{% url 'articles:edit' id=article.id %}">Редактировать</a></p>
             </article>
         {% endfor %}
     {% else %}
