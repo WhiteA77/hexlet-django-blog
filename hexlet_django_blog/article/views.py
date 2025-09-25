@@ -84,3 +84,11 @@ class ArticleFormEditView(View):
                 "article": article,
             },
         )
+
+
+class ArticleFormDeleteView(View):
+    def post(self, request, *args, **kwargs):
+        article = get_object_or_404(Article, id=kwargs["id"])
+        article.delete()
+        messages.success(request, "Статья удалена")
+        return redirect("articles:index")

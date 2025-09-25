@@ -11,7 +11,13 @@
                     <a href="{% url 'articles:show' id=article.id %}">{{ article.name }}</a>
                 </h2>
                 <div>{{ article.body|slice:":200" }}</div>
-                <p><a href="{% url 'articles:edit' id=article.id %}">Редактировать</a></p>
+                <p>
+                    <a href="{% url 'articles:edit' id=article.id %}">Редактировать</a>
+                </p>
+                <form action="{% url 'articles:delete' id=article.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Удалить">
+                </form>
             </article>
         {% endfor %}
     {% else %}
